@@ -1,0 +1,1 @@
+export default function AdminPage() { return <div>Página de Administración</div> }

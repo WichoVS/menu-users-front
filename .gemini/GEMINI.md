@@ -1,4 +1,4 @@
-# Frontend Development Rules - React.js, Next.js 15, Tailwind 4
+# Frontend Development Rules - React.js, React Router Dom ^7.13, Tailwind 4
 
 **CRITICAL: These rules are MANDATORY and must be followed in every component and file.**
 
@@ -11,8 +11,7 @@
 - Main content area → `<main>`
 - Content sections → `<section>`
 - Clickable elements → `<button>` or `<Link>`
-- Never use `<img>` - ALWAYS use `next/image` with proper sizing
-- Never use `<a>` for internal links - ALWAYS use `next/link`
+- Never use `<a>` for internal links - ALWAYS use `<Link>` or `<NavLink>` from `react-router`
 - Never hardcode colors, spacing, or fonts (no `bg-[#123]`, `p-[24px]`)
 - Never use string concatenation for classes - ALWAYS use `cn()` utility
 - Never create new components without checking existing ones first
@@ -25,16 +24,15 @@
 ### Required Imports (Use These First)
 ```typescript
 // ALWAYS import these when needed
-import Image from 'next/image' // For ALL images
-import Link from 'next/link' // For ALL internal links
+import { Link } from 'react-router' // For ALL internal links
+import { NavLink } from 'react-router' // For internal links when you need conditional rendering
 import { cn } from '@/lib/utils' // For ALL className logic
 ```
 
 ### Component Header Template (Start Every Component With This)
 ```typescript
 import { cn } from '@/lib/utils'
-import Image from 'next/image'
-import Link from 'next/link'
+import {Link} from 'react-router'
 // Import existing components from @/components first
 // Only create new ones if absolutely necessary
 
@@ -190,8 +188,7 @@ const CustomButton = ({ variant = 'primary', ...props }) => (
 Before submitting any component, verify:
 
 - [ ] Uses semantic HTML elements appropriately
-- [ ] Uses `next/image` for all images with proper alt text
-- [ ] Uses `next/link` for all internal navigation
+- [ ] Uses `react-router` for all internal navigation
 - [ ] Uses `cn()` utility for all className logic
 - [ ] No hardcoded values (colors, spacing, fonts)
 - [ ] Checks existing components before creating new ones
@@ -204,7 +201,7 @@ Before submitting any component, verify:
 **If any of these rules are violated, the code should be immediately refactored:**
 
 1. **Semantic Violations**: Replace `<div>` with proper semantic elements
-2. **Import Violations**: Add required imports (`Image`, `Link`, `cn`)
+2. **Import Violations**: Add required imports (`Link`, `cn`)
 3. **Styling Violations**: Replace hardcoded values with Tailwind utilities
 4. **Component Violations**: Check for existing components and reuse
 5. **Accessibility Violations**: Add proper ARIA attributes and alt text
