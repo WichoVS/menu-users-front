@@ -10,21 +10,14 @@ import { Button } from "@/components/ui/button";
 import { menuService } from "@/services/menu.service";
 import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { useUserStore } from "@/store/userStore";
-
-type MenuItem = {
-  idMenu: number;
-  isMain: boolean;
-  name: string;
-  parentId: number | null;
-  route: string;
-  children: MenuItem[];
-};
+import type { Menu } from "@/types/common/menu";
+import { useMenuStore } from "@/store/menuStore";
 
 interface SidebarProps {
   className?: string;
 }
 
-const MenuItemComponent: React.FC<{ item: MenuItem; level?: number }> = ({
+const MenuItemComponent: React.FC<{ item: Menu; level?: number }> = ({
   item,
   level = 0,
 }) => {
@@ -52,7 +45,7 @@ const MenuItemComponent: React.FC<{ item: MenuItem; level?: number }> = ({
           </Button>
         </CollapsibleTrigger>
         <CollapsibleContent>
-          <div className="flex flex-col">
+          <div className="flex flex-col ml-5">
             {item.children.map((child) => (
               <MenuItemComponent
                 key={child.idMenu}
@@ -72,7 +65,7 @@ const MenuItemComponent: React.FC<{ item: MenuItem; level?: number }> = ({
       asChild
       className={cn("w-full justify-start", `pl-[${paddingLeft}px]`)}
     >
-      <Link to={item.route} className="block w-full text-left">
+      <Link to={item.url} className="block w-full text-left">
         {item.name}
       </Link>
     </Button>
@@ -81,26 +74,24 @@ const MenuItemComponent: React.FC<{ item: MenuItem; level?: number }> = ({
 
 export default function Sidebar({ className }: SidebarProps) {
   const { user } = useUserStore((state) => state);
-  const [menuItems, setMenuItems] = React.useState<MenuItem[]>([]);
+  const { menusUser, setMenusUser } = useMenuStore((state) => state);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
 
   const handleGetMenuItems = async () => {
     setLoading(true);
     setError(null);
-    try {
-      const response = await menuService.getMenuItems(user?.id || "");
-      if (response.success && response.data) {
-        setMenuItems(response.data);
-      } else {
-        setError(response.error || "Error al cargar el menú.");
-      }
-    } catch (err) {
-      console.log(err);
-      setError("Error de red al cargar el menú.");
-    } finally {
-      setLoading(false);
-    }
+    menuService
+      .getMenuItems(user?.id || "")
+      .then((response) => {
+        setMenusUser(response);
+      })
+      .catch((err) => {
+        setError(err.message || "Error al cargar el menú.");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   React.useEffect(() => {
@@ -120,8 +111,8 @@ export default function Sidebar({ className }: SidebarProps) {
       className={cn("flex flex-col h-full bg-gray-100 border-r p-2", className)}
     >
       <h2 className="text-lg font-semibold mb-4 px-2">Navegación</h2>
-      <nav className="flex flex-col flex-grow space-y-1">
-        {menuItems.map((item) => (
+      <nav className="flex flex-col grow space-y-1">
+        {menusUser.map((item) => (
           <MenuItemComponent key={item.idMenu} item={item} />
         ))}
       </nav>

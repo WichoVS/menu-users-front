@@ -29,9 +29,6 @@ export default function Dashboard() {
 
         {/* Dashboard main content */}
         <main className="flex-1 p-4">
-          <h1 className="text-4xl font-bold mb-4">
-            Bienvenido al Dashboard, {user?.firstName}!
-          </h1>
           <Outlet /> {/* Render nested routes here if any */}
         </main>
       </div>

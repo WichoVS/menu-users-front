@@ -127,26 +127,10 @@ className={`base-classes ${condition ? 'conditional' : ''} ${props.className}`}
 
 ## IMAGE & LINK HANDLING
 
-### Images (MANDATORY next/image usage)
-```typescript
-// ALWAYS do this
-<Image
-src={imageSrc}
-alt={descriptiveAltText}  // NEVER empty or generic
-width={800}               // ALWAYS specify dimensions
-height={600}
-className="object-cover rounded-lg"
-priority={isAboveFold}    // For LCP images
-/>
-
-// NEVER use <img>
-<img src={src} alt={alt} />
-```
-
-### Links (MANDATORY next/link usage)
+### Links (MANDATORY react-router usage)
 ```typescript
 // Internal links
-<Link href="/about" className="hover:text-primary">
+<Link to="/about" className="hover:text-primary">
 About Us
 </Link>
 

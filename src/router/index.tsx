@@ -6,6 +6,9 @@ import Dashboard from "@/pages/Dashboard";
 import Unauthorized from "@/pages/Unauthorized";
 import ProtectedRoute from "./ProtectedRoute";
 import PerfilPage from "@/pages/Usuario/perfil.page"; // Import PerfilPage
+import MenusPage from "@/pages/Administracion/menus.page";
+import RolesPage from "@/pages/Administracion/roles.page";
+import UsuariosPage from "@/pages/Administracion/usuarios.page";
 
 const router = createBrowserRouter([
   {
@@ -34,7 +37,7 @@ const router = createBrowserRouter([
           {
             index: true,
             element: (
-              <h2 className="text-2xl font-semibold">
+              <h2 className="text-2xl font-semibold ml-10">
                 Selecciona una opción del menú
               </h2>
             ),
@@ -42,6 +45,18 @@ const router = createBrowserRouter([
           {
             path: "perfil",
             element: <PerfilPage />,
+          },
+          {
+            path: "administracion/menus",
+            element: <MenusPage />,
+          },
+          {
+            path: "administracion/roles",
+            element: <RolesPage />,
+          },
+          {
+            path: "administracion/usuarios",
+            element: <UsuariosPage />,
           },
         ],
       },

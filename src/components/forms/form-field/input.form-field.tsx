@@ -30,7 +30,10 @@ const InputFormField = ({
       name={fieldName}
       render={({ field, fieldState }) => (
         <>
-          <Label htmlFor={fieldName}>{label}</Label>
+          <Label htmlFor={fieldName}>
+            {label}{" "}
+            <span className="text-red-500">{isRequired ? "*" : ""}</span>
+          </Label>
           <Input
             id={fieldName}
             type={type}
