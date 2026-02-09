@@ -1,12 +1,5 @@
 import { useRoleStore } from "@/store/roleStore";
 import z from "zod";
-import {
-  Dialog,
-  DialogClose,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "../ui/dialog";
 import { DialogContent } from "@radix-ui/react-dialog";
 import InputFormField from "../forms/form-field/input.form-field";
 import { Button } from "../ui/button";
@@ -14,6 +7,13 @@ import { FormProvider, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import SelectFormField from "../forms/form-field/select.form-field";
 import type { CreateUserRequest } from "@/types/api/user/create-user";
+import {
+  Dialog,
+  DialogClose,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 const userSchema = z.object({
   firstName: z.string().min(1, "El nombre es requerido"),
