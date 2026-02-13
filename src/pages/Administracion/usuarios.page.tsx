@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
 import CreateUsuarioModal from "@/components/usuarios/CreateUsuarioModal";
+import { DeleteUsuarioModal } from "@/components/usuarios/DeleteUsuarioModal";
+import { EditUsuarioModal } from "@/components/usuarios/EditUsuarioModal";
 import { UsuariosList } from "@/components/usuarios/UsuariosList";
 import { roleService } from "@/services/role.service";
 import { userService } from "@/services/user.service";
@@ -104,7 +106,7 @@ export default function UsuariosPage() {
 
   return (
     <main className="container mx-auto">
-      <section className="prose flex justify-between mt-5 mb-10">
+      <section className="flex justify-between mt-5 mb-4">
         <h2 className="text-3xl font-semibold ml-10">Usuarios</h2>
         <Button
           onClick={() => {
@@ -130,6 +132,24 @@ export default function UsuariosPage() {
         isOpen={createModalOpen}
         onClose={() => setCreateModalOpen(false)}
         onSubmit={handleCreateUser}
+      />
+      {selectedUser && (
+        <EditUsuarioModal
+          isOpen={editModalOpen}
+          onClose={() => {
+            setEditModalOpen(false);
+            setSelectedUser(null);
+          }}
+          onSubmit={handleUpdateUser}
+          user={selectedUser}
+        />
+      )}
+
+      <DeleteUsuarioModal
+        isOpen={deleteAlertOpen}
+        onClose={() => setDeleteAlertOpen(false)}
+        onConfirm={confirmDelete}
+        usuario={selectedUser}
       />
     </main>
   );

@@ -1,6 +1,5 @@
 import { useRoleStore } from "@/store/roleStore";
 import z from "zod";
-import { DialogContent } from "@radix-ui/react-dialog";
 import InputFormField from "../forms/form-field/input.form-field";
 import { Button } from "../ui/button";
 import { FormProvider, useForm } from "react-hook-form";
@@ -9,6 +8,7 @@ import SelectFormField from "../forms/form-field/select.form-field";
 import type { CreateUserRequest } from "@/types/api/user/create-user";
 import {
   Dialog,
+  DialogContent,
   DialogClose,
   DialogFooter,
   DialogHeader,
@@ -79,6 +79,9 @@ export default function CreateUsuarioModal({
                   value: role.id.toString(),
                   label: role.name,
                 }))}
+                onChange={(value) => {
+                  form.setValue("roleId", parseInt(value));
+                }}
                 isRequired
               />
             </div>

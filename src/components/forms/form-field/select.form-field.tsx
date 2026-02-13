@@ -38,7 +38,7 @@ const SelectFormField = ({
       render={({ field, fieldState }) => (
         <>
           <Select
-            value={value}
+            defaultValue={value}
             onValueChange={
               onChange !== undefined
                 ? (value) => {

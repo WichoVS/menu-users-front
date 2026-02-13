@@ -55,10 +55,6 @@ export function EditMenuModal({
   });
 
   useEffect(() => {
-    console.log(menu);
-  }, []);
-
-  useEffect(() => {
     if (menu) {
       form.reset({
         name: menu.name,

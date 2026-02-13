@@ -12,6 +12,7 @@ import { ChevronDownIcon } from "@radix-ui/react-icons";
 import { useUserStore } from "@/store/userStore";
 import type { Menu } from "@/types/common/menu";
 import { useMenuStore } from "@/store/menuStore";
+import type { UserMenus } from "@/types/common/user-menus";
 
 interface SidebarProps {
   className?: string;
@@ -83,8 +84,8 @@ export default function Sidebar({ className }: SidebarProps) {
     setError(null);
     menuService
       .getMenuItems(user?.id || "")
-      .then((response) => {
-        setMenusUser(response);
+      .then((response: UserMenus) => {
+        setMenusUser(response.menu);
       })
       .catch((err) => {
         setError(err.message || "Error al cargar el menú.");
