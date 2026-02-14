@@ -5,3 +5,4 @@ export interface UpdateUserRequest {
   email: string;
   roleId: number;
 }
+``;

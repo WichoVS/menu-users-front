@@ -1,12 +1,16 @@
 import { Button } from "@/components/ui/button";
 import CreateUsuarioModal from "@/components/usuarios/CreateUsuarioModal";
 import { DeleteUsuarioModal } from "@/components/usuarios/DeleteUsuarioModal";
+import { EditMenuAccessModal } from "@/components/usuarios/EditMenuAccessModal";
 import { EditUsuarioModal } from "@/components/usuarios/EditUsuarioModal";
 import { UsuariosList } from "@/components/usuarios/UsuariosList";
+import { menuService } from "@/services/menu.service";
 import { roleService } from "@/services/role.service";
 import { userService } from "@/services/user.service";
+import { useMenuStore } from "@/store/menuStore";
 import { useRoleStore } from "@/store/roleStore";
 import { useUsersStore } from "@/store/usersStore";
+import type { UpdateMenuAccessRequest } from "@/types/api/menu/assign-menu-user";
 import type { CreateUserRequest } from "@/types/api/user/create-user";
 import type { UpdateUserRequest } from "@/types/api/user/update-user";
 import type { User } from "@/types/common/user";
@@ -14,6 +18,7 @@ import { useEffect, useState } from "react";
 
 export default function UsuariosPage() {
   const { users, setUsers } = useUsersStore((state) => state);
+  const { menus, setMenus } = useMenuStore((state) => state);
   const { setRoles } = useRoleStore((state) => state);
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState<{
@@ -59,12 +64,27 @@ export default function UsuariosPage() {
       });
   };
 
+  const handleFetchMenus = () => {
+    menuService
+      .getAllMenuItems()
+      .then((data) => {
+        if (data) {
+          setMenus(data);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching menu items:", error);
+      });
+  };
+
   const handleEditUser = (user: User) => {
     setSelectedUser(user);
     setEditModalOpen(true);
   };
 
   const handleUpdateUser = async (values: UpdateUserRequest) => {
+    console.log(values, selectedUser);
+
     if (!selectedUser) return;
     await userService.update(selectedUser.id, values);
     handleFetchUsers();
@@ -78,7 +98,12 @@ export default function UsuariosPage() {
   };
 
   const handleEditMenuAccess = (user: User) => {
-    console.log("Edit menu access for user:", user);
+    setSelectedUser(user);
+    setEditMenuAccessModal(true);
+  };
+
+  const onEditMenuAccess = (values: UpdateMenuAccessRequest) => {
+    console.log("Updating menu access with values:", values);
   };
 
   const confirmDelete = async () => {
@@ -99,6 +124,7 @@ export default function UsuariosPage() {
     const fetchData = () => {
       handleFetchUsers();
       handleFetchRoles();
+      handleFetchMenus();
     };
 
     fetchData();
@@ -142,6 +168,18 @@ export default function UsuariosPage() {
           }}
           onSubmit={handleUpdateUser}
           user={selectedUser}
+        />
+      )}
+
+      {selectedUser && (
+        <EditMenuAccessModal
+          isOpen={editMenuAccessModal}
+          onClose={() => {
+            setEditMenuAccessModal(false);
+            setSelectedUser(null);
+          }}
+          user={selectedUser}
+          onChange={onEditMenuAccess}
         />
       )}
 

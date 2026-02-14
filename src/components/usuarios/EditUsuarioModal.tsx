@@ -17,11 +17,11 @@ import { useEffect } from "react";
 import { Button } from "../ui/button";
 
 const editUsuarioSchema = z.object({
-  id: z.uuid(),
+  id: z.guid(),
   firstName: z.string().min(2).max(100),
   lastName: z.string().min(2).max(100),
   email: z.email(),
-  roleId: z.number().gt(0),
+  roleId: z.number(),
 });
 
 type EditUsuarioModalProps = {
@@ -31,7 +31,7 @@ type EditUsuarioModalProps = {
   user: User;
 };
 
-const EditUsuarioModal = ({
+export const EditUsuarioModal = ({
   isOpen,
   onClose,
   onSubmit,
@@ -41,11 +41,11 @@ const EditUsuarioModal = ({
   const form = useForm<z.infer<typeof editUsuarioSchema>>({
     resolver: zodResolver(editUsuarioSchema),
     defaultValues: {
+      id: user.id,
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
       roleId: user.roleId,
-      id: user.id,
     },
   });
   const handleOpenChange = (open: boolean) => {
@@ -56,11 +56,11 @@ const EditUsuarioModal = ({
 
   useEffect(() => {
     form.reset({
+      id: user.id,
       firstName: user.firstName,
       lastName: user.lastName,
       email: user.email,
       roleId: user.roleId,
-      id: user.id,
     });
   }, [user, form]);
 
@@ -117,5 +117,3 @@ const EditUsuarioModal = ({
     </Dialog>
   );
 };
-
-export { EditUsuarioModal };
