@@ -9,6 +9,7 @@ import {
 import { Button } from "../ui/button";
 import { useEffect, useState } from "react";
 import { Input } from "../ui/input";
+import { userService } from "@/services/user.service";
 
 type GeneratePasswordModalProps = {
   isOpen: boolean;
@@ -26,8 +27,22 @@ export const GeneratePasswordModal = ({
   const [passwordGenerated, setPasswordGenerated] = useState<string | null>(
     null,
   );
-  useEffect(() => {}, []);
+  const [isLoading, setIsLoading] = useState(false);
 
+  const handleOnGeneratePassword = () => {
+    setIsLoading(true);
+    userService
+      .generatedPassword(user.id)
+      .then((response) => {
+        setPasswordGenerated(response.generatedPassword);
+      })
+      .catch((error) => {
+        console.error("Error generating password:", error);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
@@ -57,7 +72,12 @@ export const GeneratePasswordModal = ({
           <DialogClose asChild>
             <Button variant="secondary">Cancelar</Button>
           </DialogClose>
-          <Button variant="destructive" className="" onClick={onConfirm}>
+          <Button
+            variant="destructive"
+            className=""
+            onClick={passwordGenerated ? onConfirm : handleOnGeneratePassword}
+            disabled={isLoading}
+          >
             {passwordGenerated ? "Aceptar" : "Generar Contraseña"}
           </Button>
         </DialogFooter>
