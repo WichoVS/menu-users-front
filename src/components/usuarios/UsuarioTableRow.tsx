@@ -1,12 +1,13 @@
 import { Button } from "@/components/ui/button";
 import type { User } from "@/types/common/user";
-import { Edit, Trash2, MenuSquare } from "lucide-react";
+import { Edit, Trash2, MenuSquare, Key } from "lucide-react";
 
 type UserTableRowProps = {
   user: User;
   onEdit: (user: User) => void;
   onDelete: (user: User) => void;
   onEditMenuAccess: (user: User) => void;
+  onGeneratePassword: (user: User) => void;
 };
 
 export function UsuariosTableRow({
@@ -14,6 +15,7 @@ export function UsuariosTableRow({
   onEdit,
   onDelete,
   onEditMenuAccess,
+  onGeneratePassword,
 }: UserTableRowProps) {
   return (
     <>
@@ -34,6 +36,13 @@ export function UsuariosTableRow({
             }}
           >
             <MenuSquare className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => onGeneratePassword(user)}
+          >
+            <Key className="h-4 w-4 text-blue-500" />
           </Button>
           <Button variant="ghost" size="icon" onClick={() => onEdit(user)}>
             <Edit className="h-4 w-4" />

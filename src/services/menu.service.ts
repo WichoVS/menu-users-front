@@ -119,4 +119,51 @@ export const menuService = {
       return response.json();
     });
   },
+  addMenuAccessUser: async (userId: string, menuId: number) => {
+    const token = useUserStore.getState().token;
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    };
+
+    return fetch(`${ENV.API_URL}/menu/${userId}/add-menu/${menuId}`, {
+      method: "POST",
+      headers,
+    }).then(async (response) => {
+      if (!response.ok) {
+        if (response.status === 401) {
+          useUserStore.getState().logout();
+          return;
+        }
+        const errorData = await response.json();
+        throw new Error(errorData.message || "Error al agregar acceso al menú");
+      }
+      return response.json();
+    });
+  },
+
+  removeMenuAccessUser: async (userId: string, menuId: number) => {
+    const token = useUserStore.getState().token;
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    };
+
+    return fetch(`${ENV.API_URL}/menu/${userId}/remove-menu/${menuId}`, {
+      method: "DELETE",
+      headers,
+    }).then(async (response) => {
+      if (!response.ok) {
+        if (response.status === 401) {
+          useUserStore.getState().logout();
+          return;
+        }
+        const errorData = await response.json();
+        throw new Error(
+          errorData.message || "Error al eliminar acceso al menú",
+        );
+      }
+      return response.json();
+    });
+  },
 };

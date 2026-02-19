@@ -6,6 +6,7 @@ type UsuarioListProps = {
   onEdit: (usuario: User) => void;
   onDelete: (usuario: User) => void;
   onEditMenuAccess: (usuario: User) => void;
+  onGeneratePassword: (usuario: User) => void;
 };
 
 export function UsuariosList({
@@ -13,6 +14,7 @@ export function UsuariosList({
   onEdit,
   onDelete,
   onEditMenuAccess,
+  onGeneratePassword,
 }: UsuarioListProps) {
   return (
     <div className="border border-gray-200 rounded-lg">
@@ -29,6 +31,7 @@ export function UsuariosList({
             onEdit={onEdit}
             onDelete={onDelete}
             onEditMenuAccess={onEditMenuAccess}
+            onGeneratePassword={onGeneratePassword}
           />
         ))}
       </div>

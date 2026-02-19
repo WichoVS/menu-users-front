@@ -3,6 +3,7 @@ import CreateUsuarioModal from "@/components/usuarios/CreateUsuarioModal";
 import { DeleteUsuarioModal } from "@/components/usuarios/DeleteUsuarioModal";
 import { EditMenuAccessModal } from "@/components/usuarios/EditMenuAccessModal";
 import { EditUsuarioModal } from "@/components/usuarios/EditUsuarioModal";
+import { GeneratePasswordModal } from "@/components/usuarios/GeneratePasswordModal";
 import { UsuariosList } from "@/components/usuarios/UsuariosList";
 import { menuService } from "@/services/menu.service";
 import { roleService } from "@/services/role.service";
@@ -29,6 +30,8 @@ export default function UsuariosPage() {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteAlertOpen, setDeleteAlertOpen] = useState(false);
   const [editMenuAccessModal, setEditMenuAccessModal] = useState(false);
+  const [generatePasswordModalOpen, setGeneratePasswordModalOpen] =
+    useState(false);
 
   const handleFetchUsers = () => {
     setIsLoading((prev) => ({ users: true, roles: prev.roles }));
@@ -102,6 +105,11 @@ export default function UsuariosPage() {
     setEditMenuAccessModal(true);
   };
 
+  const handleGeneratePassword = (user: User) => {
+    setSelectedUser(user);
+    setGeneratePasswordModalOpen(true);
+  };
+
   const onEditMenuAccess = (values: UpdateMenuAccessRequest) => {
     console.log("Updating menu access with values:", values);
   };
@@ -151,6 +159,7 @@ export default function UsuariosPage() {
             onEdit={handleEditUser}
             onDelete={handleDeleteUser}
             onEditMenuAccess={handleEditMenuAccess}
+            onGeneratePassword={handleGeneratePassword}
           />
         )}
       </section>
@@ -179,7 +188,21 @@ export default function UsuariosPage() {
             setSelectedUser(null);
           }}
           user={selectedUser}
-          onChange={onEditMenuAccess}
+        />
+      )}
+
+      {selectedUser && (
+        <GeneratePasswordModal
+          isOpen={generatePasswordModalOpen}
+          onClose={() => {
+            setGeneratePasswordModalOpen(false);
+            setSelectedUser(null);
+          }}
+          onConfirm={() => {
+            setGeneratePasswordModalOpen(false);
+            setSelectedUser(null);
+          }}
+          user={selectedUser}
         />
       )}
 
