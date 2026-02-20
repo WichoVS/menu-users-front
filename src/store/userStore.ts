@@ -6,6 +6,7 @@ type User = {
   lastName: string;
   email: string;
   roleId: number;
+  roleName: string;
 };
 
 type UserState = {
@@ -16,9 +17,9 @@ type UserState = {
 };
 
 const getInitialState = (): UserState => {
-  if (typeof window !== 'undefined') {
-    const storedUser = sessionStorage.getItem('user');
-    const storedToken = sessionStorage.getItem('token');
+  if (typeof window !== "undefined") {
+    const storedUser = sessionStorage.getItem("user");
+    const storedToken = sessionStorage.getItem("token");
     return {
       user: storedUser ? JSON.parse(storedUser) : null,
       token: storedToken || null,
@@ -38,16 +39,16 @@ export const useUserStore = create<UserState>((set) => ({
   ...getInitialState(),
   login: (user, token) => {
     set({ user, token });
-    if (typeof window !== 'undefined') {
-      sessionStorage.setItem('user', JSON.stringify(user));
-      sessionStorage.setItem('token', token);
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("user", JSON.stringify(user));
+      sessionStorage.setItem("token", token);
     }
   },
   logout: () => {
     set({ user: null, token: null });
-    if (typeof window !== 'undefined') {
-      sessionStorage.removeItem('user');
-      sessionStorage.removeItem('token');
+    if (typeof window !== "undefined") {
+      sessionStorage.removeItem("user");
+      sessionStorage.removeItem("token");
     }
   },
 }));

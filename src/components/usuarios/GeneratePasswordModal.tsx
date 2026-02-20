@@ -7,9 +7,16 @@ import {
   DialogTitle,
 } from "../ui/dialog";
 import { Button } from "../ui/button";
-import { useEffect, useState } from "react";
-import { Input } from "../ui/input";
+import { useState } from "react";
+import { useCopyToClipboard } from "@uidotdev/usehooks";
 import { userService } from "@/services/user.service";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupButton,
+  InputGroupInput,
+} from "../ui/input-group";
+import { Copy, CopyCheck } from "lucide-react";
 
 type GeneratePasswordModalProps = {
   isOpen: boolean;
@@ -27,6 +34,7 @@ export const GeneratePasswordModal = ({
   const [passwordGenerated, setPasswordGenerated] = useState<string | null>(
     null,
   );
+  const [copiedPassword, copyToClipboard] = useCopyToClipboard();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleOnGeneratePassword = () => {
@@ -58,13 +66,26 @@ export const GeneratePasswordModal = ({
               Nueva contraseña para {user.firstName} {user.lastName}:
             </p>
             <p className="mt-2 font-mono text-lg text-green-900">
-              <div>
-                <Input
-                  value={passwordGenerated}
+              <InputGroup>
+                <InputGroupInput
+                  placeholder={passwordGenerated}
                   readOnly
-                  className="bg-green-50"
+                  value={passwordGenerated}
                 />
-              </div>
+                <InputGroupAddon align={"inline-end"}>
+                  <InputGroupButton
+                    size={"sm"}
+                    onClick={() => copyToClipboard(passwordGenerated)}
+                    aria-label="Copiar contraseña"
+                  >
+                    {copiedPassword === passwordGenerated ? (
+                      <CopyCheck />
+                    ) : (
+                      <Copy />
+                    )}
+                  </InputGroupButton>
+                </InputGroupAddon>
+              </InputGroup>
             </p>
           </div>
         )}

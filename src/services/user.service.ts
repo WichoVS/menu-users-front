@@ -136,6 +136,30 @@ const userService = {
       return response.json();
     });
   },
+  updatePassword: async (userId: string, newPassword: string) => {
+    const token = useUserStore.getState().token;
+    const headers = {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    };
+    return fetch(`${ENV.API_URL}/user/${userId}/password`, {
+      method: "PUT",
+      headers,
+      body: JSON.stringify({ newPassword }),
+    }).then(async (response) => {
+      if (!response.ok) {
+        if (response.status === 401) {
+          useUserStore.getState().logout();
+          return;
+        }
+        const errorData = await response.json();
+        throw new Error(
+          errorData.message || "Error al actualizar la contraseña del usuario",
+        );
+      }
+      return response.json();
+    });
+  },
 };
 
 export { userService };
